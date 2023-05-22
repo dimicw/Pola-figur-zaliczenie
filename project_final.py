@@ -1,7 +1,7 @@
 import tkinter as tk
 from functions import pole
 
-
+# inicjalizacja słownika przechowującego figury i ich pola
 figury = {
     'kwadrat': [],
     'prostokąt': [],
@@ -9,9 +9,9 @@ figury = {
     'trapez': []
 }
 
-
+# fukcja tworząca okno do obliczenia pola wybranej figury
 def OknoPole(figura):
-    window = tk.Toplevel()
+    window = tk.Toplevel()     # stworzenie nowego okna             
 
     label1 = tk.Label(window, text='')
     label1.grid(row=0, column=0)
@@ -28,25 +28,28 @@ def OknoPole(figura):
     labelOut = tk.Label(window, text='')
     labelOut.grid(row=4, column=1)
 
+    # dopasowanie funkcji oraz ilości i nazw parametrów w zależności od typu figury 
     match figura:
         case 'kwadrat':
             label1.configure(text="podaj długość boku: ")
 
+            # zdefiniowanie funkcji liczącej pole
             def oblicz():
                 x = pole(False, int(entry1.get()))
                 labelOut.configure(
                     text=f'pole: {x}')
-                if (x > 0):
-                    figury['kwadrat'].append(x)
+                if (x > 0):     # sprawdzenie, czy nie wystąpił błąd (-1)
+                    figury['kwadrat'].append(x)     # dodanie wyniku do słownika
         case 'koło':
             label1.configure(text="podaj promień: ")
 
+            # zdefiniowanie funkcji liczącej pole
             def oblicz():
                 x = pole(True, int(entry1.get()))
                 labelOut.configure(
                     text=f'pole: {x}')
-                if (x > 0):
-                    figury['koło'].append(x)
+                if (x > 0):     # sprawdzenie, czy nie wystąpił błąd (-1)
+                    figury['koło'].append(x)        # dodanie wyniku do słownika
         case 'prostokąt':
             label1.configure(text="podaj długość boku a: ")
             label2.configure(text="podaj długość boku b: ")
@@ -54,12 +57,13 @@ def OknoPole(figura):
             entry2 = tk.Entry(window)
             entry2.grid(row=1, column=1)
 
+            # zdefiniowanie funkcji liczącej pole
             def oblicz():
                 x = pole(False, int(entry1.get()), int(entry2.get()))
                 labelOut.configure(
                     text=f'pole: {x}')
-                if (x > 0):
-                    figury['prostokąt'].append(x)
+                if (x > 0):     # sprawdzenie, czy nie wystąpił błąd (-1)
+                    figury['prostokąt'].append(x)   # dodanie wyniku do słownika
         case 'trapez':
             label1.configure(text="podaj długość podstawy a: ")
             label2.configure(text="podaj długość podstawy b: ")
@@ -71,20 +75,21 @@ def OknoPole(figura):
             entry3 = tk.Entry(window)
             entry3.grid(row=2, column=1)
 
+            # zdefiniowanie funkcji liczącej pole
             def oblicz():
                 x = pole(False, int(entry1.get()), int(
                     entry2.get()), int(entry3.get()))
                 labelOut.configure(
                     text=f'pole: {x}')
-                if (x > 0):
-                    figury['trapez'].append(x)
+                if (x > 0):     # sprawdzenie, czy nie wystąpił błąd (-1)
+                    figury['trapez'].append(x)  # dodanie wyniku do słownika
 
-    button = tk.Button(window, text='oblicz', command=oblicz)
+    button = tk.Button(window, text='oblicz', command=oblicz)   # przycisk do wykonania obliczenia
     button.grid(row=3, column=1)
 
-
+# fukcja tworząca okno zapisu
 def OknoZapisz():
-    window = tk.Toplevel()
+    window = tk.Toplevel()      # utworzenie nowego okna
 
     label = tk.Label(window, text='podaj nazwę dla pliku: ')
     label.grid(row=0, column=0)
@@ -92,6 +97,7 @@ def OknoZapisz():
     entry = tk.Entry(window)
     entry.grid(row=0, column=1)
 
+    # funkcja zapisująca dane ze słownika do pliku txt
     def Save():
         out = ''
 
@@ -102,32 +108,34 @@ def OknoZapisz():
 
         try:
             file2write = open(str(entry.get()) +
-                              ".txt", 'w', encoding='utf-8')
-            file2write.write(out)
-            file2write.close()
+                              ".txt", 'w', encoding='utf-8')    # otwarcie pliku do zapisu
+            file2write.write(out)       # zapis do pliku
+            file2write.close()          # zamknięcie pliku
 
             print("zapisano do pliku")
         except:
             print("wystąpił błąd, dane nie zostały zapisane")
 
-    button = tk.Button(window, text='zapsiz do pliku', command=Save)
+    button = tk.Button(window, text='zapsiz do pliku', command=Save)    # przycisk do zapisu
     button.grid(row=1, column=0)
 
 
-ws = tk.Tk()
-ws.title("Pola figur")
+ws = tk.Tk()            # utworzenie okna głównego
+ws.title("Pola figur")  # ustawienie tytułu okna
 
+# utworzenie przycisków dla figur
 kwadrat = tk.Button(ws, text="kwadrat", command=lambda: OknoPole('kwadrat'))
 kolo = tk.Button(ws, text="koło", command=lambda: OknoPole('koło'))
-prostokat = tk.Button(ws, text="prostokąt",
-                      command=lambda: OknoPole('prostokąt'))
+prostokat = tk.Button(ws, text="prostokąt", command=lambda: OknoPole('prostokąt'))
 trapez = tk.Button(ws, text="trapez", command=lambda: OknoPole('trapez'))
 zapisz = tk.Button(ws, text="zapisz", command=OknoZapisz)
 
+# wyświetlenie przycisków
 kwadrat.pack()
 kolo.pack()
 prostokat.pack()
 trapez.pack()
 zapisz.pack()
 
+# uruchomienie pętli okna głównego
 ws.mainloop()
